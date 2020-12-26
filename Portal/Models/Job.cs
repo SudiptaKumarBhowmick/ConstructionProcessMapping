@@ -19,15 +19,19 @@ namespace Portal.Models
         public int StepCount { get; set; } //not sure if this should be a property //not currently within the csv structure
         public int CustomInputCount { get; set; } //not sure if this should be a property
         public int CustomOutputCount { get; set; } //not sure if this should be a property
+        public int LevelNumber { get; set; } //not sure if this should be a property
+        public int JobNumberOnLevel { get; set; } //not sure if this should be a property
         public string GenericInputType { get; set; } //this should be a list, enum or dictionary with  below?
         public string GenericInputDescription { get; set; } //this should be a list, enum or dictionary with above?
         public string CustomOutput { get; set; } //this should be an enum?
 
-        public Job(string organisationType, string contractingOrganisationType, string jobName, string jobExecutor, int stepCount, int customInputCount, int customOutputCount)
+        public Job(string organisationType, string contractingOrganisationType, int levelNumber, string jobName, int jobNumberOnLevel, string jobExecutor, int stepCount, int customInputCount, int customOutputCount)
         {
             OrganisationType = organisationType;
             ContractingOrganisationType = contractingOrganisationType;
+            LevelNumber = levelNumber;
             JobName = jobName;
+            JobNumberOnLevel = jobNumberOnLevel;
             JobExecutor = jobExecutor;
             StepCount = stepCount;
             CustomInputCount = customInputCount;

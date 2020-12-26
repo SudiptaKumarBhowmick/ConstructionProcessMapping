@@ -34,6 +34,8 @@ namespace Portal
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IContractualRelationshipTreeService, ContractualRelationshipTreeService>();
+            services.AddScoped<IProductRelationshipNetworkService, ProductRelationshipNetworkService>();
+            services.AddScoped<IVisualService, VisualService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
