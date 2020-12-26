@@ -17,33 +17,32 @@ namespace Portal.Services
 
             List<Job> JobList = new List<Job>();
             JobList.Add(new Job("Owner", null, 0, "ProjectBriefCreation", 1, "ProjectOwner", 5, 2, 2));
-            JobList.Add(new Job("Carpentry", "GeneralContractor", 2, "Drywalling", 1, "Carpenter", 5, 2, 2));
-            JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Plastering", 2, "Plasterer", 6, 2, 2));
-            JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Painting", 3, "Painter", 8, 2, 2));
+            JobList.Add(new Job("Carpentry", "GeneralContractor", 2, "Drywalling", 3, "Carpenter", 5, 2, 2));
+            JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Plastering", 4, "Plasterer", 6, 2, 2));
+            JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Painting", 5, "Painter", 8, 2, 2));
             JobList.Add(new Job("GeneralContractor", "Owner", 1, "ProjectManagement", 1, "ContractsManager", 7, 2, 2));
-            JobList.Add(new Job("DesignContractor", "Owner", 1, "DesignManagement", 1, "DesignContractsManager", 7, 2, 2));
-            JobList.Add(new Job("ArchitecturalPractice", "DesignContractor", 1, "BuildingDesign", 1, "LeadArchitect", 7, 2, 2));
-            JobList.Add(new Job("StructuralEngineeringPractice", "DesignContractor", 1, "StructuralDesign", 1, "StructuralEngineer", 7, 2, 2));
+            JobList.Add(new Job("DesignContractor", "Owner", 1, "DesignManagement", 2, "DesignContractsManager", 7, 2, 2));
+            JobList.Add(new Job("ArchitecturalPractice", "DesignContractor", 2, "BuildingDesign", 1, "LeadArchitect", 7, 2, 2));
+            JobList.Add(new Job("StructuralEngineeringPractice", "DesignContractor", 2, "StructuralDesign", 2, "StructuralEngineer", 7, 2, 2));
 
             //List<Job> OrganistationTree = JobList;
             //OrganistationTree.Sort((x, y) => x.ContractingOrganisationType.CompareTo(y.OrganisationType));
 
             List<List<Job>> jobsPerLevelList = new List<List<Job>>();
-            List<int> distinctLevelNumber = new List<int>();
-            distinctLevelNumber.AddRange(JobList.Select(x => x.LevelNumber).Distinct().ToList());
-            foreach (var value in distinctLevelNumber)
-            {
-                jobsPerLevelList.Add(new List<Job>());
-                foreach (var job in JobList)
-                {
-                    if (Job.LevelNumber.Equals(distinctLevelNumber))
-                    {
-                        List<Job>(Job));
-                    }
-                }               
-            }
+            //List<int> distinctLevelNumber = new List<int>();
+            //distinctLevelNumber.AddRange(JobList.Select(x => x.LevelNumber).Distinct().ToList());
+            var jobsByLevelNumber = JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { LevelNumber = level, Jobs = jobs });
+            jobsByLevelNumber.S
+            //foreach (var value in distinctLevelNumber)
+            //{
+            //    jobsPerLevelList.Add(new List<Job>());
+            //    foreach (var job in JobList)
+            //    {
+            //        var jobsByLevelNumber = JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { LevelNumber = level, Jobs = jobs });
+            //    }               
+            //}
 
-
+            var sortedByJobSteps = jobsByLevelNumber.ElementAt()
 
 
 
