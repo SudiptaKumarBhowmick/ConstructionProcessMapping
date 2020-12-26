@@ -5,20 +5,19 @@ using System.Threading.Tasks;
 
 namespace Portal.Models
 {
-    public class StructuringInformationModel: BaseModel
+    public class StructuringInformationModel : BaseModel
     {
         public Guid Record { get; set; }
         public string JobName { get; set; }
-        public int StepNumber { get; set; }
         public string JobExecutor { get; set; }
+        public string OrganisationType { get; set; }
+        public string ContractingOrganisationType { get; set; }
+        public string CustomInput { get; set; }
+        public int StepNumber { get; set; }
         public string StepName { get; set; }
-        public string Input { get; set; }
-        public string PrimaryPrecedingJob { get; set; }
-        public string PrimarySubsequentJob { get; set; }
-        public string SecondaryPrecedingJob1 { get; set; }
-        public string SecondaryPrecedingJob2 { get; set; }
-        public string SecondarySubsequentJob1 { get; set; }
-        public string SecondarySubsequentJob2 { get; set; }
+        public string GenericInputType { get; set; }
+        public string GenericInputDescription { get; set; }
+        public string CustomOutput { get; set; }
 
         public StructuringInformationModel()
         {

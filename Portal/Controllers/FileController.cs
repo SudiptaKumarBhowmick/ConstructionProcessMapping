@@ -10,15 +10,20 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Portal.Data;
 using Portal.Models;
+using Portal.Services;
 
 namespace Portal.Controllers
 {
     public class FileController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public FileController(ApplicationDbContext context)
+        private readonly IContractualRelationshipTreeService _contractualRelationshipTreeService;
+        private readonly IProductRelationshipNetworkService _productRelationshipNetworkService;
+        public FileController(ApplicationDbContext context, IContractualRelationshipTreeService contractualRelationshipTreeService, IProductRelationshipNetworkService productRelationshipNetworkService)
         {
             _context = context;
+            _contractualRelationshipTreeService = contractualRelationshipTreeService;
+            _productRelationshipNetworkService = productRelationshipNetworkService;
         }
         public IActionResult Index()
         {
@@ -63,6 +68,8 @@ namespace Portal.Controllers
                     _context.Jobdata.AddRange(jobdata);
 
                     _context.SaveChanges();
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    var results = _contractualRelationshipTreeService.DefineContractualRelationshipHierarchy(FromOrganisationStructuringInformationModelToJob(jobdata));
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -79,21 +86,20 @@ namespace Portal.Controllers
             int linecounter = 0;
             while ((line = streamReader.ReadLine()) != null)
             {
-                if (linecounter != 0)
+                if (linecounter > 1)
                 {
                     var job = new StructuringInformationModel();
                     var columns = line.Split(",");
                     job.JobName = columns[0];
-                    job.StepNumber = Convert.ToInt32(columns[1]);
-                    job.JobExecutor = columns[2];
-                    job.StepName = columns[3];
-                    job.Input = columns[4];
-                    job.PrimaryPrecedingJob = columns[5];
-                    job.PrimarySubsequentJob = columns[6];
-                    job.SecondaryPrecedingJob1 = columns[7];
-                    job.SecondaryPrecedingJob2 = columns[8];
-                    job.SecondarySubsequentJob1 = columns[9];
-                    job.SecondarySubsequentJob2 = columns[10];
+                    job.JobExecutor = columns[1];
+                    job.OrganisationType = columns[2];
+                    job.ContractingOrganisationType = columns[3];
+                    job.CustomInput = columns[4];
+                    job.StepNumber = columns[5] != string.Empty ? Convert.ToInt32(columns[5]): 0;
+                    job.StepName = columns[6];
+                    job.GenericInputType = columns[7];
+                    job.GenericInputDescription = columns[8];
+                    job.CustomOutput = columns[9];
                     job.Record = uniqueRecordId;
                     job.CreationDate = creationDate;
                     job.ModificationDate = creationDate;
@@ -106,5 +112,13 @@ namespace Portal.Controllers
 
             return strinfo;
         }
+        private List<Job> FromOrganisationStructuringInformationModelToJob(List<StructuringInformationModel> organisationStructuringInformationModelList)
+        {
+            return organisationStructuringInformationModelList.Select(x => new Job (x.OrganisationType, x.ContractingOrganisationType, x.JobName, x.JobExecutor)).ToList();
+        }
+        private List<Job> FromProductStructuringInformationModelToJob(List<StructuringInformationModel> productStructuringInformationModelList)
+        {
+            return productStructuringInformationModelList.Select(x => new Job(x.CustomInput, x.CustomOutput, x.JobName, x.JobExecutor)).ToList();
+        }    //something is really not right with this, this should be using the constructor format
     }
 }

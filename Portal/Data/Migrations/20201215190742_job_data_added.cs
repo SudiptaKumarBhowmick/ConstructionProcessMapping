@@ -19,16 +19,15 @@ namespace Portal.Data.Migrations
                     ModifyBy = table.Column<string>(nullable: true),
                     Record = table.Column<Guid>(nullable: false),
                     JobName = table.Column<string>(nullable: true),
-                    StepNumber = table.Column<int>(nullable: false),
                     JobExecutor = table.Column<string>(nullable: true),
+                    CompanyType = table.Column<string>(nullable: true),
+                    ContractingCompanyType = table.Column<string>(nullable: true),
+                    CustomInput = table.Column<string>(nullable: true),
+                    StepNumber = table.Column<int>(nullable: false),
                     StepName = table.Column<string>(nullable: true),
-                    Input = table.Column<string>(nullable: true),
-                    PrimaryPrecedingJob = table.Column<string>(nullable: true),
-                    PrimarySubsequentJob = table.Column<string>(nullable: true),
-                    SecondaryPrecedingJob1 = table.Column<string>(nullable: true),
-                    SecondaryPrecedingJob2 = table.Column<string>(nullable: true),
-                    SecondarySubsequentJob1 = table.Column<string>(nullable: true),
-                    SecondarySubsequentJob2 = table.Column<string>(nullable: true)
+                    GenericInputType = table.Column<string>(nullable: true),
+                    GenericInputDescription = table.Column<string>(nullable: true),
+                    CustomOutput = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {

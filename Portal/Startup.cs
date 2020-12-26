@@ -12,6 +12,7 @@ using Portal.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Portal.Services;
 
 namespace Portal
 {
@@ -32,6 +33,7 @@ namespace Portal
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IContractualRelationshipTreeService, ContractualRelationshipTreeService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

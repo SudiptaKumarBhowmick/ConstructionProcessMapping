@@ -1,40 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\workspace\\Portal\\Portal\\Portal.csproj": {}
+    "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\Portal\\Portal.csproj": {}
   },
   "projects": {
-    "C:\\workspace\\Portal\\Portal\\Portal.csproj": {
+    "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\Portal\\Portal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\workspace\\Portal\\Portal\\Portal.csproj",
+        "projectUniqueName": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\Portal\\Portal.csproj",
         "projectName": "Portal",
-        "projectPath": "C:\\workspace\\Portal\\Portal\\Portal.csproj",
-        "packagesPath": "C:\\Users\\Gabriel\\.nuget\\packages\\",
-        "outputPath": "C:\\workspace\\Portal\\Portal\\obj\\",
+        "projectPath": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\Portal\\Portal.csproj",
+        "packagesPath": "C:\\Users\\MFyfe\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\Portal\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Gabriel\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\ServiceFabricSDK.config"
+          "C:\\Users\\MFyfe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\Microsoft SDKs\\Service Fabric\\packages": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://msibercaja.pkgs.visualstudio.com/_packaging/Iberfabric-npm/nuget/v3/index.json": {},
-          "https://msibercaja.pkgs.visualstudio.com/_packaging/Iberfabric-vNext-Templates/nuget/v3/index.json": {},
-          "https://msibercaja.pkgs.visualstudio.com/_packaging/Iberfabric-vNext/nuget/v3/index.json": {},
-          "https://msibercaja.pkgs.visualstudio.com/_packaging/Iberfabric/nuget/v3/index.json": {},
-          "https://msibercaja.pkgs.visualstudio.com/_packaging/Omnicanalidad/nuget/v3/index.json": {},
-          "https://msibercaja.pkgs.visualstudio.com/_packaging/Soporte/nuget/v3/index.json": {},
-          "https://msibercaja.pkgs.visualstudio.com/_packaging/TransaccionesHost/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
@@ -93,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
         }
       }
     }
