@@ -43,7 +43,7 @@ namespace Portal.Services
 
             for (int ii = 0; ii < orderedJobListByLevelNumber.Count(); ii++)
             {
-                int organisationalNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).Where(g => g.Count() == 1).Count(); //not certain this one is correct
+                int organisationalNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).Count();
                 int jobStepNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).Sum(job => job.StepCount);
                 int jobExecutorCountAtLevel = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.JobName).Where(g => g.Count() == 1).Count(); //this is actually unique job type (job executor may have more than one job), needs more thought. not essential immediately as all job executors have one job
 
@@ -53,6 +53,8 @@ namespace Portal.Services
                 
                 for (int jj = 0; jj < organisationalNodeCountAtLevel; jj++)
                 {
+                    int sumOfJobExecutorNodesForPreviousOrganisations = ;
+                    int countOfJobExecutorNodesForOrganisation = JobList.Where(j => j.LevelNumber == ii).Where(j => j.OrganisationType == jj);
                     double organisationNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius - 7000;
                     var organisationalAngleFromEmployeeDomainStart = JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { LevelNumber = level, Jobs = jobs.OrderBy(j => j.JobNumberOnLevel) }).OrderBy(e => e.LevelNumber);
                     organisationNodeAngleFromStart += organisationNodeAngleFromStart + angleBetweenJobExecutorNodesAtLevel * (jj + 1.5) / 2;
