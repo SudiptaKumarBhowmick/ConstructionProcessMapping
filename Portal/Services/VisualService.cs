@@ -50,10 +50,11 @@ namespace Portal.Services
                 double angleBetweenJobStepNodes = (Math.PI / 180) * 360 / (jobStepNodeCountAtLevel - jobStepNodeCountAtLevel + jobStepNodeCountAtLevel * 12); //this is clearly not right. This should also be made level dependant, so that there is a consistent distance between nodes rather than a consistent angle
                 double angleBetweenJobExecutorNodesAtLevel = (Math.PI / 180) * 360 / (jobExecutorCountAtLevel + 1);
                 double organisationNodeAngleFromStart = 0;
-                
+                int jobExecutorCountBeforeCurrentOrganisation = 0;
+
                 for (int jj = 0; jj < organisationalNodeCountAtLevel; jj++)
                 {
-                    int sumOfJobExecutorNodesForPreviousOrganisations = ;
+                    jobExecutorCountBeforeCurrentOrganisation += JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).;
                     int countOfJobExecutorNodesForOrganisation = JobList.Where(j => j.LevelNumber == ii).Where(j => j.OrganisationType == jj);
                     double organisationNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius - 7000;
                     var organisationalAngleFromEmployeeDomainStart = JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { LevelNumber = level, Jobs = jobs.OrderBy(j => j.JobNumberOnLevel) }).OrderBy(e => e.LevelNumber);
