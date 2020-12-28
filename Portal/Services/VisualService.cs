@@ -9,10 +9,10 @@ namespace Portal.Services
 {
     public class VisualService : IVisualService
     {
+        Canvas canvas = new Canvas();
+        List<EntityNodeConfiguration> EntityNodes = new List<EntityNodeConfiguration>();
         public List<EntityNodeConfiguration> GetNodePlottingGeometry(List<Job> customInputs)
-        {
-            Canvas canvas = new Canvas();
-            List<EntityNodeConfiguration> EntityNodes = new List<EntityNodeConfiguration>();
+        {           
             EntityNodes.Add(new EntityNodeConfiguration (0, 0, 0, GraphConstants.OWNERCOLOUR, GraphConstants.OWNERNODESIZE)); //need to incorporate this into the main algorithm, then delete
 
             List<Job> JobList = new List<Job>();
@@ -25,184 +25,73 @@ namespace Portal.Services
             JobList.Add(new Job("PlasteringAndPainting"        , "GeneralContractor", 2, "Plastering"          , 4, "Plasterer"             , 6, 2, 2));
             JobList.Add(new Job("PlasteringAndPainting"        , "GeneralContractor", 2, "Painting"            , 5, "Painter"               , 8, 2, 2));
 
-            //var jobsByLevelNumber =            JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { LevelNumber = level, Jobs = jobs });
             var orderedJobListByLevelNumber = JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { LevelNumber = level, Jobs = jobs.OrderBy(j => j.JobNumberOnLevel) }).OrderBy(e => e.LevelNumber);
-            var count = JobList.Where(j => j.LevelNumber == 1).GroupBy(j => j.OrganisationType).Where(g => g.Count() == 1).Count();
-            //var jobJobCountByOrganisationType = JobList.GroupBy(j => j.LevelNumber, j => j, (level, organisation) => new { LevelNumber = level, Jobs = organisation.OrderBy(j => j.OrganisationType) }).OrderBy(e => e.LevelNumber);
-            var jobCountByOrganisationType = JobList.GroupBy(j => j.LevelNumber).OrderBy(j => j.Key);
+            //var jobCountByOrganisationType = JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { JobNumberOnLevel = level, Jobs = jobs.GroupBy(j => j.OrganisationType) }).Count();
 
-            //var jobCountByOrganisationType =
-            //        from job in JobList
-            //        group job by job.LevelNumber into newGroup1
-            //        from newGroup2 in
-            //            (from job in newGroup1
-            //             group job by job.OrganisationType)
-            //        group newGroup2 by newGroup1.Key;
+            double diskRadialPortionLength = (canvas.OuterRadius - canvas.InnerRadius) / (orderedJobListByLevelNumber.Count() + 1); //checked
+            int halfDistanceBetweenJobStepNodes = 1250; //going to just use a nominal amount here for POC, but clash detection needs to be considered beyond that
 
-            double jobExecutorNodePlacementDivisionRadius = (canvas.OuterRadius - canvas.InnerRadius) / (orderedJobListByLevelNumber.Count() + 1);
-
-            for (int ii = 0; ii < orderedJobListByLevelNumber.Count(); ii++)
+            for (int ii = 0; ii < orderedJobListByLevelNumber.Count(); ii++) //checked
             {
-                int organisationalNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).Count();
-                int jobStepNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).Sum(job => job.StepCount);
-                int jobExecutorCountAtLevel = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.JobName).Where(g => g.Count() == 1).Count(); //this is actually unique job type (job executor may have more than one job), needs more thought. not essential immediately as all job executors have one job
+                int organisationNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).Count(); //checked
+                int jobExecutorNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.JobName).Where(g => g.Count() == 1).Count(); //this is actually unique job type (job executor may have more than one job), needs more thought. not essential immediately as all job executors have one job //checked
+                int jobStepNodeCountAtLevel = JobList.Where(j => j.LevelNumber == ii).Sum(job => job.StepCount); //checked
 
-                double angleBetweenJobStepNodes = (Math.PI / 180) * 360 / (jobStepNodeCountAtLevel - jobStepNodeCountAtLevel + jobStepNodeCountAtLevel * 12); //this is clearly not right. This should also be made level dependant, so that there is a consistent distance between nodes rather than a consistent angle
-                double angleBetweenJobExecutorNodesAtLevel = (Math.PI / 180) * 360 / (jobExecutorCountAtLevel + 1);
+                double angleBetweenJobStepNodesAtLevel = Math.Atan(halfDistanceBetweenJobStepNodes/(diskRadialPortionLength * ii + canvas.InnerRadius + 7000));
+                double angleBetweenJobExecutorNodesAtLevel = Math.PI*2 / (jobExecutorNodeCountAtLevel + 1); //checked
                 double organisationNodeAngleFromStart = 0;
                 int jobExecutorCountBeforeCurrentOrganisation = 0;
 
-                for (int jj = 0; jj < organisationalNodeCountAtLevel; jj++)
+                for (int jj = 0; jj < organisationNodeCountAtLevel; jj++)
                 {
-                    jobExecutorCountBeforeCurrentOrganisation += JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).;
-                    int countOfJobExecutorNodesForOrganisation = JobList.Where(j => j.LevelNumber == ii).Where(j => j.OrganisationType == jj);
-                    double organisationNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius - 7000;
+                    var orderJobCountByOrganisation = ;
+                    //jobExecutorCountBeforeCurrentOrganisation += JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).;
+                    var jobExecutorNodeCountForOrganisation = JobList.Where(j => j.LevelNumber == ii).GroupBy(j => j.OrganisationType).Count();
                     var organisationalAngleFromEmployeeDomainStart = JobList.GroupBy(j => j.LevelNumber, j => j, (level, jobs) => new { LevelNumber = level, Jobs = jobs.OrderBy(j => j.JobNumberOnLevel) }).OrderBy(e => e.LevelNumber);
                     organisationNodeAngleFromStart += organisationNodeAngleFromStart + angleBetweenJobExecutorNodesAtLevel * (jj + 1.5) / 2;
-                    xyzLocations(organisationNodePlacementRadius, organisationNodeAngleFromStart, EntityNodes, canvas.HeightOfHelix, GraphConstants.ORGANISATIONCOLOUR, GraphConstants.ORGANISATIONNODESIZE);
-                    
-                    for (int kk = 0; kk < jobExecutorCountAtLevel; kk++)
-                    {
-                        double jobExecutorNodeAngleFromStart = angleBetweenJobExecutorNodesAtLevel * (kk + 1);
-                        double jobExecutorNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius;
-                        xyzLocations(jobExecutorNodePlacementRadius, jobExecutorNodeAngleFromStart, EntityNodes, canvas.HeightOfHelix, GraphConstants.JOBEXECUTORCOLOUR, GraphConstants.JOBEXECUTORNODESIZE);
+                    xyzLocations(diskRadialPortionLength, ii, -7000, organisationNodeAngleFromStart, GraphConstants.ORGANISATIONCOLOUR, GraphConstants.ORGANISATIONNODESIZE);
+                }  
+                for (int kk = 0; kk < jobExecutorNodeCountAtLevel; kk++)
+                {
+                    var jobStepNodeCountForJob = JobList.Where(j => j.LevelNumber == ii && j.JobNumberOnLevel == kk +1).Select(j => j.StepCount); //checked - something not quite right here, should be outputting the firstordefualt val
+                    var customInputNodeCountForJob = JobList.Where(j => j.LevelNumber == ii && j.JobNumberOnLevel == kk + 1).Select(j => j.CustomInputCount);
+                    var customOutputNodeCountForJob = JobList.Where(j => j.LevelNumber == ii && j.JobNumberOnLevel == kk + 1).Select(j => j.CustomOutputCount);
+                    double jobExecutorNodeAngleFromStart = angleBetweenJobExecutorNodesAtLevel * (kk + 1); //checked
+                    xyzLocations(diskRadialPortionLength, ii, 0, jobExecutorNodeAngleFromStart, GraphConstants.JOBEXECUTORCOLOUR, GraphConstants.JOBEXECUTORNODESIZE); //checked
 
-                        for (int ll = 0; ll < jobStepNodeCountAtLevel; ll++)
-                        {
-                            double jobStepNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius + 7000;
-                            double jobStepNodeAngleFromAssociatedJobExecutorNode = (((jobStepNodeCountAtLevel - 1) * angleBetweenJobStepNodes) / -2) + angleBetweenJobStepNodes * ll;
-                            double jobStepNodeAngleFromStart = jobExecutorNodeAngleFromStart - jobStepNodeAngleFromAssociatedJobExecutorNode;
-                            xyzLocations(jobStepNodePlacementRadius, jobStepNodeAngleFromStart, EntityNodes, canvas.HeightOfHelix, GraphConstants.JOBSTEPCOLOUR, GraphConstants.JOBSTEPNODESIZE);
-                            //Below, place the product nodes on the canvas
-                        }
+                    for (int ll = 0; ll < jobStepNodeCountForJob.FirstOrDefault(); ll++) //should not need to apply firstordefault at this point
+                    {
+                        double jobStepNodeAngleFromAssociatedJobExecutorNode = ((jobStepNodeCountForJob.FirstOrDefault() - 1) * angleBetweenJobStepNodesAtLevel / -2) + angleBetweenJobStepNodesAtLevel * ll;
+                        double jobStepNodeAngleFromStart = jobExecutorNodeAngleFromStart - jobStepNodeAngleFromAssociatedJobExecutorNode;
+                        xyzLocations(diskRadialPortionLength, ii, 7000, jobStepNodeAngleFromStart, GraphConstants.JOBSTEPCOLOUR, GraphConstants.JOBSTEPNODESIZE);
+                    }
+                    for (int mm = 0; mm < customInputNodeCountForJob.FirstOrDefault(); mm++)
+                    {
+                        double customInputNodeAngleFromAssociatedJobExecutorNode = ((jobStepNodeCountForJob.FirstOrDefault() - 1) * angleBetweenJobStepNodesAtLevel / -2) - angleBetweenJobStepNodesAtLevel; //plotting 2x (in the correct location)
+                        double customInputNodeAngleFromStart = jobExecutorNodeAngleFromStart - customInputNodeAngleFromAssociatedJobExecutorNode;
+                        xyzLocations(diskRadialPortionLength, ii, 7000, customInputNodeAngleFromStart, GraphConstants.CUSTOMPRODUCTCOLOUR, GraphConstants.CUSTOMPRODUCTNODESIZE);
+                    }
+                    for (int nn = 0; nn < customOutputNodeCountForJob.FirstOrDefault(); nn++)
+                    {
+                        double customOutputNodeAngleFromAssociatedJobExecutorNode = ((jobStepNodeCountForJob.FirstOrDefault() - 1) * angleBetweenJobStepNodesAtLevel / -2) + angleBetweenJobStepNodesAtLevel * (jobStepNodeCountForJob.FirstOrDefault());
+                        double customOutputNodeAngleFromStart = jobExecutorNodeAngleFromStart - customOutputNodeAngleFromAssociatedJobExecutorNode;
+                        xyzLocations(diskRadialPortionLength, ii, 7000, customOutputNodeAngleFromStart, GraphConstants.CUSTOMPRODUCTCOLOUR, GraphConstants.CUSTOMPRODUCTNODESIZE);
                     }
                 }
             }
             return EntityNodes;
-
-
-                //    #region oldWay
-                //    int totalJobStepCount1 = 0;
-                //int totalJobStepCount2 = 0;
-                //List<int> PseudoJobList1 = new List<int>(); //here the jobs are ordered according to the lists order, the value refers to the number of job steps
-                //PseudoJobList1.Add(2);
-                //PseudoJobList1.Add(5);
-                //PseudoJobList1.Add(6);
-                //PseudoJobList1.Add(4);
-                //for (int jjj = 0; jjj < PseudoJobList1.Count; jjj++)
-                //{
-                //    totalJobStepCount1 += PseudoJobList1.ElementAt(jjj);
-                //}
-                //List<int> jobStepCountList1 = new List<int>();
-                //for (int jjj2 = 0; jjj2 < PseudoJobList1.Count; jjj2++)
-                //{
-                //    jobStepCountList1.Add(PseudoJobList1.ElementAt(jjj2));
-                //}
-
-                //List<int> PseudoJobList2 = new List<int>(); //here the jobs are ordered according to the lists order, the value refers to the number of job steps
-                //PseudoJobList2.Add(2);
-                //PseudoJobList2.Add(4);
-                //for (int kkk = 0; kkk < PseudoJobList2.Count; kkk++)
-                //{
-                //    totalJobStepCount1 += PseudoJobList2.ElementAt(kkk);
-                //}
-                //List<int> jobStepCountList2 = new List<int>();
-                //for (int kkk2 = 0; kkk2 < PseudoJobList2.Count; kkk2++)
-                //{
-                //    jobStepCountList2.Add(PseudoJobList2.ElementAt(kkk2));
-                //}
-
-                //List<int> PseudoJobList3 = new List<int>(); //here the jobs are ordered according to the lists order, the value refers to the number of job steps
-                //PseudoJobList3.Add(8);
-                //PseudoJobList3.Add(6);
-                //PseudoJobList3.Add(7);
-                //PseudoJobList3.Add(5);
-                //for (int lll = 0; lll < PseudoJobList3.Count; lll++)
-                //{
-                //    totalJobStepCount2 += PseudoJobList3.ElementAt(lll);
-                //}
-                //List<int> jobStepCountList3 = new List<int>();
-                //for(int lll2 = 0; lll2 < PseudoJobList3.Count; lll2++)
-                //{
-                //    jobStepCountList3.Add(PseudoJobList3.ElementAt(lll2));
-                //}
-
-                //List<int> jobExecutorsCountPerLevelList = new List<int>();
-                //jobExecutorsCountPerLevelList.Add(PseudoJobList1.Count + PseudoJobList2.Count);
-                //jobExecutorsCountPerLevelList.Add(PseudoJobList3.Count);
-
-                //List<int> jobStepCountPerLevelList = new List<int>();
-                //jobStepCountPerLevelList.Add(totalJobStepCount1);
-                //jobStepCountPerLevelList.Add(totalJobStepCount2);
-
-                //List<List<int>> uniqueJobStepCountListList = new List<List<int>>();
-                //uniqueJobStepCountListList.Add(jobStepCountList1);
-                //uniqueJobStepCountListList.Add(jobStepCountList2);
-                //uniqueJobStepCountListList.Add(jobStepCountList3);
-
-                //Dictionary<List<int>, int> OrgJobStepCount = new Dictionary<List<int>, int>();
-                //OrgJobStepCount.Add(PseudoJobList1, 1);
-                //OrgJobStepCount.Add(PseudoJobList2, 1);
-                //OrgJobStepCount.Add(PseudoJobList3, 2);
-                //int levelCount = 0;
-                //foreach (var value in OrgJobStepCount.Values.Distinct())
-                //{
-                //    levelCount += 1;
-                //}
-                //Dictionary<int, int> valCount = new Dictionary<int, int>();
-                //foreach (int value in OrgJobStepCount.Values)
-                //    if (valCount.ContainsKey(value))
-                //        valCount[value]++;
-                //    else
-                //        valCount[value] = 1;
-
-                //double jobExecutorNodePlacementDivisionRadius = (canvas.OuterRadius - canvas.InnerRadius) / (levelCount + 1);
-
-                //for (int ii = 0; ii < levelCount; ii++)
-                //{   //Here, setting the distance of each organisational level from the centre, setting how many organisational nodes are at the current level and evaluating the angle between job executors and job steps at the current level
-                //    double organisationNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius - 7000;
-                //    int organisationalNodeCount = valCount.ElementAt(index: ii).Value;
-                //    double angleBetweenJobStepNodes = (Math.PI / 180) * 360 / (jobStepCountPerLevelList.ElementAt(ii) - jobStepCountPerLevelList.ElementAt(ii) + jobStepCountPerLevelList.ElementAt(ii) * 12);
-                //    double angleBetweenJobExecutorNodes = (Math.PI / 180) * 360 / (jobExecutorsCountPerLevelList.ElementAt(ii) + 1);
-                //    double organisationNodeAngleFromStart = 0;
-
-                //    for (int jj = 0; jj < organisationalNodeCount; jj++)
-                //    {
-                //        organisationNodeAngleFromStart += organisationNodeAngleFromStart + angleBetweenJobExecutorNodes * (OrgJobStepCount.ElementAt(jj).Key.Count + 0.5) / 2;
-                //        xyzLocations(organisationNodePlacementRadius, organisationNodeAngleFromStart, EntityNodes, canvas.HeightOfHelix, GraphConstants.ORGANISATIONCOLOUR, GraphConstants.ORGANISATIONNODESIZE);
-
-                //        for (int kk = 0; kk < jobExecutorsCountPerLevelList.ElementAt(ii); kk++)
-                //        {
-                //            double jobExecutorNodeAngleFromStart = angleBetweenJobExecutorNodes * (kk + 1);
-                //            double jobExecutorNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius;
-                //            xyzLocations(jobExecutorNodePlacementRadius, jobExecutorNodeAngleFromStart, EntityNodes, canvas.HeightOfHelix, GraphConstants.JOBEXECUTORCOLOUR, GraphConstants.JOBEXECUTORNODESIZE);
-
-                //            for (int ll = 0; ll < jobStepCountPerLevelList.ElementAt(ii); ll++)
-                //            {
-                //                double jobStepNodePlacementRadius = jobExecutorNodePlacementDivisionRadius * (ii + 1) + canvas.InnerRadius + 7000;
-                //                double jobStepNodeAngleFromAssociatedJobExecutorNode = (((jobStepCountPerLevelList.ElementAt(ii) - 1) * angleBetweenJobStepNodes) / -2) + angleBetweenJobStepNodes * ll;
-                //                double jobStepNodeAngleFromStart = jobExecutorNodeAngleFromStart - jobStepNodeAngleFromAssociatedJobExecutorNode;
-                //                xyzLocations(jobStepNodePlacementRadius, jobStepNodeAngleFromStart, EntityNodes, canvas.HeightOfHelix, GraphConstants.JOBSTEPCOLOUR, GraphConstants.JOBSTEPNODESIZE);
-                //                //Below, placing the product nodes on the canvas
-                //            }
-                //        }
-                //    }
-                //}
-                //return EntityNodes;
-                //#endregion
-            }
-        private void xyzLocations(double nodePlacementRadius, double nodeAngleFromStart, List<EntityNodeConfiguration> nodeList, int heightOfHelix, string nodeColour, int nodeSize)
+        }
+        private void xyzLocations(double radialPortion, int currentLevel, int offset, double nodeAngleFromStart, string nodeColour, int nodeSize)
         {
-            double NodeX = nodePlacementRadius * Math.Sin(nodeAngleFromStart);
-            double NodeY = nodePlacementRadius * Math.Cos(nodeAngleFromStart);
+            double NodePlacementRadius = radialPortion * currentLevel + canvas.InnerRadius + offset;
+            double NodeX = NodePlacementRadius * Math.Sin(nodeAngleFromStart);
+            double NodeY = NodePlacementRadius * Math.Cos(nodeAngleFromStart);
             double proportionOfWayRoundHelix = nodeAngleFromStart / (2 * Math.PI);
-            double NodeZ = (proportionOfWayRoundHelix * -heightOfHelix) - 100;
-            nodeList.Add(new EntityNodeConfiguration((int)NodeX, (int)NodeY, (int)NodeZ, nodeColour, nodeSize));
+            double NodeZ = (proportionOfWayRoundHelix * -canvas.HeightOfHelix) - 100;
+            EntityNodes.Add(new EntityNodeConfiguration((int)NodeX, (int)NodeY, (int)NodeZ, nodeColour, nodeSize));
         }
     }
 }
-
-    //3. Far too many nodes are being plotted?
     //4. Fix canvas size
     //5. Work out trace/legend functionality 'labels'
     //8. Discuss making the nodes fixed sizes, so they get closer as you zoom in. It looks like we have to modify the plotly codebase itself to achieve this. The alternative would be to find a different canvas
@@ -212,6 +101,5 @@ namespace Portal.Services
     //12. Remove the xyz coordinates from the tooltip
     //13. Do we need to use CSV, can we just import an excel doc directly?
 
-    //Add products/inputs/outputs
     //Need to be able to add all sub node types to the owner as well
     //Add connecting lines/arrows - straight lines will suffice for POC
