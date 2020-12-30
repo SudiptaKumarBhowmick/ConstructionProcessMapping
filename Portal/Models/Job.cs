@@ -10,25 +10,26 @@ namespace Portal.Models
     {
         public Guid Record { get; set; }
 
-        public string MasterName { get; set; }
+        public string MasterName { get; set; } // don't need this here
         public string JobName { get; set; }
         public string JobExecutor { get; set; }
         public string OrganisationType { get; set; }
         public string ContractingOrganisationType { get; set; }
-        public int StepNumber { get; set; }
-        public string DisplayedText { get; set; }
+        public List<int> StepNumbers { get; set; }
+        public List<string> StepNames { get; set; }
+        public List<string> CustomInputs { get; set; }
+        public List<string> CustomOutputs { get; set; }
+        public List<string> GenericInputDescriptions { get; set; }
+        public List<string> GenericInputTypes { get; set; }
+        public string DisplayedText { get; set; } // don't need this here
 
 
-        public List<string> CustomInput { get; set; } //this should be an enum?
-        public string StepName { get; set; } //this should be a list or maybe an enum of string?
-        public int StepCount { get; set; } //not sure if this should be a property //not currently within the csv structure
-        public int CustomInputCount { get; set; } //not sure if this should be a property
-        public int CustomOutputCount { get; set; } //not sure if this should be a property
-        public int LevelNumber { get; set; } //not sure if this should be a property
-        public int JobNumberOnLevel { get; set; } //not sure if this should be a property
-        public string GenericInputType { get; set; } //this should be a list, enum or dictionary with  below?
-        public string GenericInputDescription { get; set; } //this should be a list, enum or dictionary with above?
-        public List<string> CustomOutput { get; set; } //this should be an enum?
+        public int StepCount { get; set; } //should not need this property, it's just lisofsteps.count
+        public int LevelNumber { get; set; }
+        public int JobNumberOnLevel { get; set; }
+        public int CustomInputCount { get; set; } //should not need this property, it's just lisofinputs.count
+        public int CustomOutputCount { get; set; } //should not need this property, it's just lisofoutputs.count
+        public int GenericInputCount { get; set; } //should not need this property, it's just lisofsteps.count
 
         public Job(string organisationType, string contractingOrganisationType, int levelNumber, string jobName, int jobNumberOnLevel, string jobExecutor, int stepCount, int customInputCount, int customOutputCount)
         {

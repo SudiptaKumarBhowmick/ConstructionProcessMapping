@@ -74,7 +74,7 @@ namespace Portal.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private List<StructuringInformationModel> ProcessFile(byte[] filestream)
+        private StructuringInformationModel ProcessFile(byte[] filestream)
         {
             List<string> masterNameList = new List<string>();
             List<int> jobStepNumberList = new List<int>();
@@ -92,13 +92,13 @@ namespace Portal.Controllers
                 {
                     var job = new StructuringInformationModel();
                     var columns = line.Split(",");
-                    job.MasterName = columns[0];
-                    job.JobName = columns[1];
-                    job.JobExecutor = columns[2];
-                    job.OrganisationType = columns[3];
-                    job.ContractingOrganisationType = columns[4];
-                    //job.StepNumber = columns[5] != string.Empty ? Convert.ToInt32(columns[5]) : 0);
-                    //job.StepName = columns[6];
+                    job.MasterName = StringListEntryAdder(columns[0]);
+                    job.JobName = NameFinder(columns[1]);
+                    job.JobExecutor = NameFinder(columns[2]);
+                    job.OrganisationType = NameFinder(columns[3]);
+                    job.ContractingOrganisationType = NameFinder(columns[4]);
+                    job.StepNumber = IntListEntryAdder(columns[5] != string.Empty ? Convert.ToInt32(columns[5]) : 0);
+                    job.StepName = StringListEntryAdder(columns[6]);
                     job.Record = uniqueRecordId;
                     job.CreationDate = creationDate;
                     job.ModificationDate = creationDate;
@@ -108,7 +108,6 @@ namespace Portal.Controllers
                 }
                 linecounter++;
             }
-
             return strinfo;
         }
         private List<Job> FromOrganisationStructuringInformationModelToJob(List<StructuringInformationModel> organisationStructuringInformationModelList)
@@ -121,13 +120,28 @@ namespace Portal.Controllers
         //    return productStructuringInformationModelList.Select(x => new Job(x.StepNumber, x.CustomOutput, x.MasterName, x.JobName)).ToList();
         //}    //something is not right with this, this should be using the constructor format
 
-        private string[] MasterNameFinder(string[] findTrue)
+        private string NameFinder(string findTrue)
         {
+            string jobNameFinder = "";
             if (findTrue != null)
             {
-                return findTrue;
+                jobNameFinder += findTrue;
             }
-            else { return null; }
+            return jobNameFinder;
+        }
+
+        private List<string> StringListEntryAdder(string current)
+        {
+            List<string> names = new List<string>();
+            names.Add(current);
+            return names;
+        }
+
+        private List<int> IntListEntryAdder(int current)
+        {
+            List<int> numbers = new List<int>();
+            numbers.Add(current);
+            return numbers;
         }
     }
 }
