@@ -68,7 +68,6 @@ namespace Portal.Controllers
                     _context.Jobdata.AddRange(jobdata);
 
                     _context.SaveChanges();
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     var results = _contractualRelationshipTreeService.DefineContractualRelationshipHierarchy(FromOrganisationStructuringInformationModelToJob(jobdata));
                 }
             }
@@ -77,6 +76,9 @@ namespace Portal.Controllers
 
         private List<StructuringInformationModel> ProcessFile(byte[] filestream)
         {
+            List<string> masterNameList = new List<string>();
+            List<int> jobStepNumberList = new List<int>();
+            List<string> jobStepDescriptionList = new List<string>();
             var strinfo = new List<StructuringInformationModel>();
             var uniqueRecordId = Guid.NewGuid();
             var streamReader = new StreamReader(new MemoryStream(filestream), System.Text.Encoding.UTF8, true );
@@ -90,16 +92,13 @@ namespace Portal.Controllers
                 {
                     var job = new StructuringInformationModel();
                     var columns = line.Split(",");
-                    job.JobName = columns[0];
-                    job.JobExecutor = columns[1];
-                    job.OrganisationType = columns[2];
-                    job.ContractingOrganisationType = columns[3];
-                    job.CustomInput = columns[4];
-                    job.StepNumber = columns[5] != string.Empty ? Convert.ToInt32(columns[5]): 0;
-                    job.StepName = columns[6];
-                    job.GenericInputType = columns[7];
-                    job.GenericInputDescription = columns[8];
-                    job.CustomOutput = columns[9];
+                    job.MasterName = columns[0];
+                    job.JobName = columns[1];
+                    job.JobExecutor = columns[2];
+                    job.OrganisationType = columns[3];
+                    job.ContractingOrganisationType = columns[4];
+                    //job.StepNumber = columns[5] != string.Empty ? Convert.ToInt32(columns[5]) : 0);
+                    //job.StepName = columns[6];
                     job.Record = uniqueRecordId;
                     job.CreationDate = creationDate;
                     job.ModificationDate = creationDate;
@@ -114,11 +113,21 @@ namespace Portal.Controllers
         }
         private List<Job> FromOrganisationStructuringInformationModelToJob(List<StructuringInformationModel> organisationStructuringInformationModelList)
         {
-            return organisationStructuringInformationModelList.Select(x => new Job (x.OrganisationType, x.ContractingOrganisationType, x.JobName, x.JobExecutor)).ToList();
+            var rawJob = organisationStructuringInformationModelList.Select(x => new Job (x.JobExecutor, x.ContractingOrganisationType, x.OrganisationType, x.JobName)).ToList();
+            return rawJob;
         }
-        private List<Job> FromProductStructuringInformationModelToJob(List<StructuringInformationModel> productStructuringInformationModelList)
+        //private List<Job> FromProductStructuringInformationModelToJob(List<StructuringInformationModel> productStructuringInformationModelList)
+        //{
+        //    return productStructuringInformationModelList.Select(x => new Job(x.StepNumber, x.CustomOutput, x.MasterName, x.JobName)).ToList();
+        //}    //something is not right with this, this should be using the constructor format
+
+        private string[] MasterNameFinder(string[] findTrue)
         {
-            return productStructuringInformationModelList.Select(x => new Job(x.CustomInput, x.CustomOutput, x.JobName, x.JobExecutor)).ToList();
-        }    //something is really not right with this, this should be using the constructor format
+            if (findTrue != null)
+            {
+                return findTrue;
+            }
+            else { return null; }
+        }
     }
 }

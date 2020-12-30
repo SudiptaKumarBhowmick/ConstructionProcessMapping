@@ -17,9 +17,8 @@ namespace Portal.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.Canvas = (List<EntityNodeConfiguration>)_visualService.GetNodePlottingGeometry(null);
+            ViewBag.Canvas = (List<EntityNodeConfiguration>)_visualService.GetNodePlottingGeometry(null) /*+ (List <StraightConnectorLineConfiguration>_visualService.GetNodePlottingGeometry(null)*/;
             return View();
         }
-        //Allocate a proportionate slot for the job according to how many steps, inputs and outputs it has, the organisation slot then wraps around all the job executors and jobs in its domain. If an organistation contains no jobs, presume a simgle job executor and a job with a single input, a single output and 6 job steps (MAKE THESE NODES INVISIBLE)         
     }
 }

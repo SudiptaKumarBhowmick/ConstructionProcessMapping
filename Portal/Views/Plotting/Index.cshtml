@@ -15,6 +15,8 @@
 
     //## Documentation: https://plotly.com/javascript/3d-scatter-plots/ 
 
+
+
     data = @Html.Raw(Json.Serialize(@ViewBag.Canvas))
 
     var gridsettings =
@@ -31,9 +33,8 @@
         width: 1200,
         scene:
         {
+            mode: "lines + markers",
             aspectmode: "data",
-            //aspectmode: "cube",
-            //aspectmode: "manual",
             aspectratio: {x: 1, y: 1, z: 1},
             xaxis: gridsettings,
             yaxis: gridsettings,

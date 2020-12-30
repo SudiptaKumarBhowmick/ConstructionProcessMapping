@@ -9,12 +9,17 @@ namespace Portal.Models
     public class Job
     {
         public Guid Record { get; set; }
+
+        public string MasterName { get; set; }
         public string JobName { get; set; }
         public string JobExecutor { get; set; }
         public string OrganisationType { get; set; }
         public string ContractingOrganisationType { get; set; }
-        public string CustomInput { get; set; } //this should be an enum?
-        public int StepNumber { get; set; } //this should be an enum?
+        public int StepNumber { get; set; }
+        public string DisplayedText { get; set; }
+
+
+        public List<string> CustomInput { get; set; } //this should be an enum?
         public string StepName { get; set; } //this should be a list or maybe an enum of string?
         public int StepCount { get; set; } //not sure if this should be a property //not currently within the csv structure
         public int CustomInputCount { get; set; } //not sure if this should be a property
@@ -23,7 +28,7 @@ namespace Portal.Models
         public int JobNumberOnLevel { get; set; } //not sure if this should be a property
         public string GenericInputType { get; set; } //this should be a list, enum or dictionary with  below?
         public string GenericInputDescription { get; set; } //this should be a list, enum or dictionary with above?
-        public string CustomOutput { get; set; } //this should be an enum?
+        public List<string> CustomOutput { get; set; } //this should be an enum?
 
         public Job(string organisationType, string contractingOrganisationType, int levelNumber, string jobName, int jobNumberOnLevel, string jobExecutor, int stepCount, int customInputCount, int customOutputCount)
         {
@@ -33,9 +38,9 @@ namespace Portal.Models
             JobName = jobName;
             JobNumberOnLevel = jobNumberOnLevel;
             JobExecutor = jobExecutor;
-            StepCount = stepCount;
-            CustomInputCount = customInputCount;
-            CustomOutputCount = customOutputCount;
+            StepCount = stepCount; //should not need this property, it's just lisofsteps.count
+            CustomInputCount = customInputCount; //should not need this property, it's just lisofinputs.count
+            CustomOutputCount = customOutputCount; //should not need this property, it's just lisofoutputs.count
         }
 
         public Job(string organisationType, string contractingOrganisationType, string jobName, string jobExecutor)

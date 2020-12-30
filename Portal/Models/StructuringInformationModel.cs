@@ -8,16 +8,16 @@ namespace Portal.Models
     public class StructuringInformationModel : BaseModel
     {
         public Guid Record { get; set; }
+        public List<string> MasterName { get; set; }
         public string JobName { get; set; }
         public string JobExecutor { get; set; }
         public string OrganisationType { get; set; }
         public string ContractingOrganisationType { get; set; }
-        public string CustomInput { get; set; }
-        public int StepNumber { get; set; }
-        public string StepName { get; set; }
-        public string GenericInputType { get; set; }
-        public string GenericInputDescription { get; set; }
-        public string CustomOutput { get; set; }
+        public List<int> StepNumber { get; set; }
+        public List<string> StepName { get; set; }
+        public List<string> CustomInputName { get; set; }
+        public List<string> CustomOutputName { get; set; }
+        public List<string> GenericInputName { get; set; }
 
         public StructuringInformationModel()
         {
