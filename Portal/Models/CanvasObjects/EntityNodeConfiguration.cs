@@ -22,16 +22,16 @@ namespace Portal.Models
         public string Labels { get; set; }
         public string Text { get; set; }
         public int[] Coords { get; set; }
-        public EntityNodeConfiguration(int x, int y, int z, string color , int size/*, string labels*/, string text)
-        {
-            this.x = new List<int> { x };
-            this.y = new List<int> { y };
-            this.z = new List<int> { z };
-            this.Type = GraphConstants.DEFAULTGRAPH;
-            this.Marker = new Marker { Color = color, Size = size };
-            //this.Labels = labels;
-            this.Text = text;
-        }
+        public EntityNodeConfiguration(int x, int y, int z, string color , int size/*, string labels*/, string text) //this needs to go
+        { //this needs to go
+            this.x = new List<int> { x }; //this needs to go
+            this.y = new List<int> { y }; //this needs to go
+            this.z = new List<int> { z }; //this needs to go
+            this.Type = GraphConstants.DEFAULTGRAPH; //this needs to go
+            this.Marker = new Marker { Color = color, Size = size }; //this needs to go
+            //this.Labels = labels; //this needs to go
+            this.Text = text; //this needs to go
+        } //this needs to go
 
         public EntityNodeConfiguration(int[] coords, string color, int size/*, string labels*/, string text)
         {

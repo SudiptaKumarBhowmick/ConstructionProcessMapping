@@ -17,7 +17,7 @@ namespace Portal.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.Canvas = (List<EntityNodeConfiguration>)_visualService.GetNodePlottingGeometry(null) /*+ (List <StraightConnectorLineConfiguration>_visualService.GetNodePlottingGeometry(null)*/;
+            ViewBag.Canvas = /*(List<EntityNodeConfiguration>)_visualService.GetNodePlottingGeometry(null) +*/ (List<StraightConnectorLineConfiguration>)_visualService.GetNodePlottingGeometry(null);
             return View();
         }
     }

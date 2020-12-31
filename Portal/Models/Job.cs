@@ -5,32 +5,28 @@ using System.Threading.Tasks;
 
 namespace Portal.Models
 {
-    //objects: map, job, process
     public class Job
     {
         public Guid Record { get; set; }
 
-        public string MasterName { get; set; } // don't need this here
         public string JobName { get; set; }
         public string JobExecutor { get; set; }
         public string OrganisationType { get; set; }
         public string ContractingOrganisationType { get; set; }
-        public List<int> StepNumbers { get; set; }
-        public List<string> StepNames { get; set; }
-        public List<string> CustomInputs { get; set; }
-        public List<string> CustomOutputs { get; set; }
-        public List<string> GenericInputDescriptions { get; set; }
-        public List<string> GenericInputTypes { get; set; }
-        public string DisplayedText { get; set; } // don't need this here
+        public List<OrderedStepNameAndStepNumber> OrderedStepNameAndStepNumber { get; set; }
+        public List<CustomInputModel> OrderedCustomInputName { get; set; }
+        public List<CustomOutputModel> OrderedCustomOutputName { get; set; }
+        public List<OrderedGenericInputNameAndStepNumber> OrderedGenericInputNameAndStepNumber { get; set; }
 
-
-        public int StepCount { get; set; } //should not need this property, it's just lisofsteps.count
+        //Not sure if the two below can be dealt within the file controller, they might have to be dealt with when the files are compiled into the database
         public int LevelNumber { get; set; }
         public int JobNumberOnLevel { get; set; }
-        public int CustomInputCount { get; set; } //should not need this property, it's just lisofinputs.count
-        public int CustomOutputCount { get; set; } //should not need this property, it's just lisofoutputs.count
-        public int GenericInputCount { get; set; } //should not need this property, it's just lisofsteps.count
 
+        //Don't think that any of the below should be required, they can be called on within the code as OrderedCustomInputName.Count for instance. Might be more efficient to have them as properties, not sure
+        public int StepCount { get; set; }
+        public int CustomInputCount { get; set; }
+        public int CustomOutputCount { get; set; }
+        public int GenericInputCount { get; set; }
         public Job(string organisationType, string contractingOrganisationType, int levelNumber, string jobName, int jobNumberOnLevel, string jobExecutor, int stepCount, int customInputCount, int customOutputCount)
         {
             OrganisationType = organisationType;
@@ -39,23 +35,26 @@ namespace Portal.Models
             JobName = jobName;
             JobNumberOnLevel = jobNumberOnLevel;
             JobExecutor = jobExecutor;
-            StepCount = stepCount; //should not need this property, it's just lisofsteps.count
-            CustomInputCount = customInputCount; //should not need this property, it's just lisofinputs.count
-            CustomOutputCount = customOutputCount; //should not need this property, it's just lisofoutputs.count
+            StepCount = stepCount;
+            CustomInputCount = customInputCount;
+            CustomOutputCount = customOutputCount;
         }
-
-        public Job(string organisationType, string contractingOrganisationType, string jobName, string jobExecutor)
+        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType, List<OrderedStepNameAndStepNumber> orderedStepNameAndStepNumber, List<CustomInputModel> orderedCustomInputName, List<CustomOutputModel> orderedCustomOutputName, List<OrderedGenericInputNameAndStepNumber> orderedGenericInputNameAndStepNumber)
         {
-            OrganisationType = organisationType;
-            ContractingOrganisationType = contractingOrganisationType;
             JobName = jobName;
             JobExecutor = jobExecutor;
-        }
-        public Job(string organisationType)
-        {
             OrganisationType = organisationType;
+            //LevelNumber = ;
+            //JobNumberOnLevel = ;
+            ContractingOrganisationType = contractingOrganisationType;
+            OrderedStepNameAndStepNumber = orderedStepNameAndStepNumber;
+            OrderedCustomInputName = orderedCustomInputName;
+            OrderedCustomOutputName = orderedCustomOutputName;
+            OrderedGenericInputNameAndStepNumber = orderedGenericInputNameAndStepNumber;
+            StepCount = orderedStepNameAndStepNumber.Count(); //is this right?
+            CustomInputCount = orderedCustomInputName.Count(); //is this right?
+            CustomOutputCount = orderedCustomOutputName.Count(); //is this right?
+            GenericInputCount = orderedGenericInputNameAndStepNumber.Count(); //is this right?
         }
-
-        public Job(){}
     }
 }

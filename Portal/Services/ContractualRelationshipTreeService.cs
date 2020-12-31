@@ -9,7 +9,7 @@ namespace Portal.Services
     public class ContractualRelationshipTreeService : IContractualRelationshipTreeService
     {
         public List<OrganisationTypeEntity> DefineContractualRelationshipHierarchy(List<Job> organisations)
-        {   //still need a way to define here a 2nd component of a placement code (something like an a, b, c... component for each level)
+        {   //still need a way to define here a 2nd component of a placement code (something like an a, b, c... component for each level) - perhaps use dictionary or enum?
             List<string> organisationType = GetListOfOrganisationTypes(organisations);
             List<OrganisationTypeEntity> contractTree = new List<OrganisationTypeEntity>();
             contractTree.Add(new OrganisationTypeEntity ("Owner", 1, 1));
@@ -37,7 +37,7 @@ namespace Portal.Services
 
         private int GetCompanyIdentifierID(string contractingOrganisationType, List<string> organisationType)
         {
-            for (int i = 0; i < organisationType.Count; i++) //should the above be a string or a list of string???
+            for (int i = 0; i < organisationType.Count; i++)
             {
                 if (organisationType[i].ToLowerInvariant() == contractingOrganisationType) //what is the purpose of tolowerinvariant here? feels like we need an i-1 or i+1
                 {

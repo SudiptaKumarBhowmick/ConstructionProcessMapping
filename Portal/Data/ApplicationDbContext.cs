@@ -11,7 +11,10 @@ namespace Portal.Data
     {
         public DbSet<FileModel> Files { get; set; }
         public DbSet<StructuringInformationModel> Jobdata { get; set; }
-
+        public DbSet<CustomInputModel> CustomInputs { get; set; }
+        public DbSet<CustomOutputModel> CustomOutputs { get; set; }
+        public DbSet<OrderedStepNameAndStepNumber> JobSteps { get; set; }
+        public DbSet<OrderedGenericInputNameAndStepNumber> GenericInputs { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

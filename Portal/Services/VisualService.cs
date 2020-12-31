@@ -12,16 +12,17 @@ namespace Portal.Services
         Canvas canvas = new Canvas();
         List<EntityNodeConfiguration> EntityNodes = new List<EntityNodeConfiguration>();
         List<StraightConnectorLineConfiguration> RelationshipLinks = new List<StraightConnectorLineConfiguration>();
-        public List<EntityNodeConfiguration> GetNodePlottingGeometry(List<Job> customInputs)
-        {           
+        public List<StraightConnectorLineConfiguration> GetNodePlottingGeometry(List<Job> customInputs)
+        {
+            int[] acoords = { (int)0, (int)1000 };
+            int[] bcoords = { (int)0, (int)1000 };
+            int[] ccoords = { (int)0, (int)1000 };
             EntityNodes.Add(new EntityNodeConfiguration (0, 0, 0, GraphConstants.OWNERCOLOUR, GraphConstants.OWNERNODESIZE, "Owner")); //need to incorporate this into the main algorithm, then delete
-            RelationshipLinks.Add(new StraightConnectorLineConfiguration(0, 0, 0, 10000, 10000, 10000, "rgb(66, 135, 245)", 7));
+            RelationshipLinks.Add(new StraightConnectorLineConfiguration(acoords, bcoords, ccoords));
 
-            // this object should look more like: JobList.Add(new Job("Owner", null, 0, "ProjectBriefCreation", 1, "ProjectOwner", List<JobSteps>, List<CustomInput>, List<CustomOutput>));       ,
             List<Job> JobList = new List<Job>();
-            //                 company type                  type of company who contracted company          'level'            job itself         job level order number       job executor       number of job steps   number of inputs     number of outputs
-            JobList.Add(new Job("Owner"                                     , null                            , 0,       "ProjectBriefCreation",            1,                  "ProjectOwner"          , 5,                    4,                    2));
-            JobList.Add(new Job("GeneralContractor"                                       , "Owner"            , 1, "ProjectManagement"   , 1, "ContractsManager"      , 7, 2, 2));
+            JobList.Add(new Job("Owner"                        , null               , 0, "ProjectBriefCreation", 1, "ProjectOwner"          , 5, 4, 2));
+            JobList.Add(new Job("GeneralContractor"            , "Owner"            , 1, "ProjectManagement"   , 1, "ContractsManager"      , 7, 2, 2));
             JobList.Add(new Job("DesignContractor"             , "Owner"            , 1, "DesignManagement"    , 2, "DesignContractsManager", 7, 2, 2));
             JobList.Add(new Job("ArchitecturalPractice"        , "DesignContractor" , 2, "BuildingDesign"      , 1, "LeadArchitect"         , 7, 2, 2));
             JobList.Add(new Job("StructuralEngineeringPractice", "DesignContractor" , 2, "StructuralDesign"    , 2, "StructuralEngineer"    , 7, 2, 2));
@@ -101,7 +102,7 @@ namespace Portal.Services
                     }
                 }
             }
-            return EntityNodes;
+            return RelationshipLinks;
         }
         private Array xyzArray(double radialPortion, int currentLevel, int offset, double nodeAngleFromStart)
         {
