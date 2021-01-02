@@ -56,5 +56,12 @@ namespace Portal.Models
             CustomOutputCount = orderedCustomOutputName.Count(); //is this right?
             GenericInputCount = orderedGenericInputNameAndStepNumber.Count(); //is this right?
         }
+        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType)
+        {
+            JobName = jobName;
+            JobExecutor = jobExecutor;
+            OrganisationType = organisationType;
+            ContractingOrganisationType = contractingOrganisationType;
+        }
     }
 }

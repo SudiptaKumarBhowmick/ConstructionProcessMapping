@@ -9,15 +9,26 @@ namespace Portal.Services
 {
     public class ContractualRelationshipTreeService2
     {
-        public Dictionary<Job, int> OrganisationLevelAllocation(List<Job> rawJobList)
+        public Dictionary<Job, int> OrganisationLevelAllocation(/*List<Job> rawJobList*/)
         {
+            List<Job> rawJobList = new List<Job>();
+            rawJobList.Add(new Job("ProjectBriefCreation", "ProjectOwner", "Owner", null));
+            rawJobList.Add(new Job("ProjectManagement", "ContractsManager", "GeneralContractor", "Owner"));
+            rawJobList.Add(new Job("DesignManagement", "DesignContractsManager", "DesignContractor", "Owner"));
+            rawJobList.Add(new Job("BuildingDesign", "LeadArchitect", "ArchitecturalPractice", "DesignContractor"));
+            rawJobList.Add(new Job("StructuralDesign", "StructuralEngineer", "StructuralEngineeringPractice", "DesignContractor"));
+            rawJobList.Add(new Job("Drywalling", "Carpenter", "Carpentry", "GeneralContractor"));
+            rawJobList.Add(new Job("Plastering", "Plasterer", "PlasteringAndPainting", "GeneralContractor"));
+            rawJobList.Add(new Job("Painting", "Painter", "PlasteringAndPainting", "GeneralContractor"));
+
             int organisationLevel = 0;
             Dictionary<Job, int> allocateLevel = new Dictionary<Job, int>();
+            Console.WriteLine(allocateLevel);
             foreach (var job in rawJobList)
             {
-                if (job.ContractingOrganisationType == string.Empty && job.ContractingOrganisationType != "Owner")
+                if (job.ContractingOrganisationType == string.Empty && job.OrganisationType != "Owner")
                 {
-                    rawJobList.Remove(job); //job validation here
+                    rawJobList.Remove(job); //job entry validation here
                 }
                 else
                 {
@@ -25,14 +36,17 @@ namespace Portal.Services
                     rawJobList.Remove(job);
                 }
             }
-            foreach (var job in rawJobList)
+            while (rawJobList.Count > 0)
             {
-                if (allocateLevel.Keys.FirstOrDefault(x => x.ContractingOrganisationType.Equals(job.OrganisationType)) is Job suitableJob)
+                foreach (var job in rawJobList)
                 {
-                    allocateLevel.Add(job, allocateLevel.Values.FirstOrDefault(x => x.ContractingOrganisationType.Equals(job.OrganisationType)) + 1);
+                    if (allocateLevel.Keys.FirstOrDefault(x => x.ContractingOrganisationType.Equals(job.OrganisationType)) is Job suitableJob)
+                    {
+                        allocateLevel.Add(job, allocateLevel.FirstOrDefault(x => x.Key.ContractingOrganisationType.Equals(job.OrganisationType)).Value + 1);
+                        rawJobList.Remove(job);
+                    }
                 }
             }
-
             return allocateLevel;
         }
     }

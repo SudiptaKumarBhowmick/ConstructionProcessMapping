@@ -147,18 +147,18 @@ namespace Portal.Services
         //public VisualService(IJobDataService jobDataService) //do wee need this?
 
 
-        public void GetGeometry()
-        {
-            List<Job> JobList = new List<Job>();
-            JobList.Add(new Job("Owner", null, 0, "ProjectBriefCreation", 1, "ProjectOwner", 5, 4, 2));
-            JobList.Add(new Job("GeneralContractor", "Owner", 1, "ProjectManagement", 1, "ContractsManager", 7, 2, 2));
-            JobList.Add(new Job("DesignContractor", "Owner", 1, "DesignManagement", 2, "DesignContractsManager", 7, 2, 2));
-            JobList.Add(new Job("ArchitecturalPractice", "DesignContractor", 2, "BuildingDesign", 1, "LeadArchitect", 7, 2, 2));
-            JobList.Add(new Job("StructuralEngineeringPractice", "DesignContractor", 2, "StructuralDesign", 2, "StructuralEngineer", 7, 2, 2));
-            JobList.Add(new Job("Carpentry", "GeneralContractor", 2, "Drywalling", 3, "Carpenter", 5, 2, 2));
-            JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Plastering", 4, "Plasterer", 6, 2, 2));
-            JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Painting", 5, "Painter", 8, 2, 2));
-        }
+        //public void GetGeometry()
+        //{
+        //    List<Job> JobList = new List<Job>();
+        //    JobList.Add(new Job("Owner", null, 0, "ProjectBriefCreation", 1, "ProjectOwner", 5, 4, 2));
+        //    JobList.Add(new Job("GeneralContractor", "Owner", 1, "ProjectManagement", 1, "ContractsManager", 7, 2, 2));
+        //    JobList.Add(new Job("DesignContractor", "Owner", 1, "DesignManagement", 2, "DesignContractsManager", 7, 2, 2));
+        //    JobList.Add(new Job("ArchitecturalPractice", "DesignContractor", 2, "BuildingDesign", 1, "LeadArchitect", 7, 2, 2));
+        //    JobList.Add(new Job("StructuralEngineeringPractice", "DesignContractor", 2, "StructuralDesign", 2, "StructuralEngineer", 7, 2, 2));
+        //    JobList.Add(new Job("Carpentry", "GeneralContractor", 2, "Drywalling", 3, "Carpenter", 5, 2, 2));
+        //    JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Plastering", 4, "Plasterer", 6, 2, 2));
+        //    JobList.Add(new Job("PlasteringAndPainting", "GeneralContractor", 2, "Painting", 5, "Painter", 8, 2, 2));
+        //}
 
 
 
