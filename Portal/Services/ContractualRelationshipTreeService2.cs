@@ -9,7 +9,7 @@ namespace Portal.Services
 {
     public class ContractualRelationshipTreeService2
     {
-        public Dictionary<Job, int> OrganisationLevelAllocation(/*List<Job> rawJobList*/)
+        public List<Job> OrganisationLevelAllocation(List<Job> rawList)
         {
             List<Job> rawJobList = new List<Job>();
             rawJobList.Add(new Job("ProjectBriefCreation", "ProjectOwner", "Owner", null));
@@ -21,33 +21,50 @@ namespace Portal.Services
             rawJobList.Add(new Job("Plastering", "Plasterer", "PlasteringAndPainting", "GeneralContractor"));
             rawJobList.Add(new Job("Painting", "Painter", "PlasteringAndPainting", "GeneralContractor"));
 
-            int organisationLevel = 0;
-            Dictionary<Job, int> allocateLevel = new Dictionary<Job, int>();
-            Console.WriteLine(allocateLevel);
+            List<Job> levelAssignedJobList = new List<Job>();
             foreach (var job in rawJobList)
+            {
+                var levelAssignedJob = rawJobList.Select(x => new Job(x.JobName, x.JobExecutor, x.OrganisationType, x.ContractingOrganisationType, OrgLevelInt(rawJobList, rawJobList.IndexOf(x))));
+            }
+            return levelAssignedJobList;
+        }
+
+        public int OrgLevelInt(List<Job> rawList, int rawListIndexNumber)
+        {
+            int index = rawListIndexNumber;
+            int organisationLevel = 0;
+            List<Job> toBeDiscarded = new List<Job>();
+            List<Job> toBeRemoved = new List<Job>();
+            Dictionary<Job, int> allocateLevel = new Dictionary<Job, int>();
+            foreach (var job in rawList)
             {
                 if (job.ContractingOrganisationType == string.Empty && job.OrganisationType != "Owner")
                 {
-                    rawJobList.Remove(job); //job entry validation here
+                    toBeDiscarded.Add(job); //job entry validation here
                 }
-                else
+                if (job.OrganisationType == "Owner")
                 {
                     allocateLevel.Add(job, organisationLevel += 1);
-                    rawJobList.Remove(job);
+                    toBeRemoved.Add(job);
                 }
             }
-            while (rawJobList.Count > 0)
+            foreach (var job in toBeRemoved)
             {
-                foreach (var job in rawJobList)
+                rawList.Remove(job);
+            }
+            toBeRemoved.Clear();
+            while (rawList.Count > 0)
+            {
+                foreach (var job in rawList)
                 {
-                    if (allocateLevel.Keys.FirstOrDefault(x => x.ContractingOrganisationType.Equals(job.OrganisationType)) is Job suitableJob)
+                    if (allocateLevel.Keys.FirstOrDefault(x => x.OrganisationType == job.ContractingOrganisationType) is Job suitableJob)
                     {
-                        allocateLevel.Add(job, allocateLevel.FirstOrDefault(x => x.Key.ContractingOrganisationType.Equals(job.OrganisationType)).Value + 1);
-                        rawJobList.Remove(job);
+                        allocateLevel.Add(job, allocateLevel.FirstOrDefault(x => x.Key.OrganisationType.Equals(job.ContractingOrganisationType)).Value + 1);
+                        toBeRemoved.Add(job);
                     }
                 }
             }
-            return allocateLevel;
+            return allocateLevel.Values.IndexOf(index);
         }
     }
 }

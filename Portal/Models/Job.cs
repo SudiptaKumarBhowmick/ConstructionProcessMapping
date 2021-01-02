@@ -63,5 +63,13 @@ namespace Portal.Models
             OrganisationType = organisationType;
             ContractingOrganisationType = contractingOrganisationType;
         }
+        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType, int organisationLevelNumber)
+        {
+            JobName = jobName;
+            JobExecutor = jobExecutor;
+            OrganisationType = organisationType;
+            ContractingOrganisationType = contractingOrganisationType;
+            OrganisationLevelNumber = organisationLevelNumber;
+        }
     }
 }
