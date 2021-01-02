@@ -8,9 +8,9 @@ namespace Portal.Models
     public class BaseModel
     {
         public int Id { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime ModificationDate { get; set; }
-        public String CreateBy { get; set; }
-        public String ModifyBy { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime ModificationDate { get; set; } = DateTime.Now;
+        public String CreateBy { get; set; } = "System";
+        public String ModifyBy { get; set; } = "System";
     }
 }

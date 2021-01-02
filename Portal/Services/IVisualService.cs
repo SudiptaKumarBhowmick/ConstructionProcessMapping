@@ -8,7 +8,7 @@ namespace Portal.Services
 {
     public interface IVisualService
     {
-        //List<EntityNodeConfiguration> GetNodePlottingGeometry(List<Job> customInputs); //dont think we need custom inputs here
-        List<StraightConnectorLineConfiguration> GetNodePlottingGeometry(List<Job> customInputs);
+        Task<List<EntityNodeConfiguration>> GetNodePlottingGeometry(Guid recordID);
+        Task<StraightConnectionLineViewModel> GetLinePlottingGeometry(Guid recordID);
     }
 }

@@ -36,6 +36,8 @@ namespace Portal
             services.AddScoped<IContractualRelationshipTreeService, ContractualRelationshipTreeService>();
             //services.AddScoped<IProductRelationshipNetworkService, ProductRelationshipNetworkService>();
             services.AddScoped<IVisualService, VisualService>();
+            services.AddScoped<IJobDataService, JobDataService>();
+            services.AddScoped<IFileService, FileService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

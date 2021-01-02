@@ -6,39 +6,45 @@ using System.Threading.Tasks;
 
 namespace Portal.Models
 {
-    public class LineProperties
+    public class Line
     {
-        public string Color { get; set; }
-        public int Width { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
+        public int z { get; set; }
+        public Line(int x, int y, int z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
     }
-    public class StraightConnectorLineConfiguration //RelationshipArrowConfiguration
+    public class StraightConnectorLine
     {
-        public string Type { get; set; }
-        public string Mode { get; set; }
+        public StraightConnectorLine()
+        {
+            Lines = new List<Line>();
+        }
+        public List<Line> Lines { get; set; }
+        public StraightConnectionLineViewModel GetLineViewModel ()
+        {
+            var model = new StraightConnectionLineViewModel();
+            model.x = new List<int>();
+            model.y = new List<int>();
+            model.z = new List<int>();
+            foreach (var line in Lines)
+            {
+                model.x.Add(line.x);
+                model.y.Add(line.y);
+                model.z.Add(line.z);
+            }
+            return model;
+        }
+    }
+    public class StraightConnectionLineViewModel
+    {
         public List<int> x { get; set; }
         public List<int> y { get; set; }
         public List<int> z { get; set; }
-        public List<int> x1 { get; set; }
-        public List<int> y1 { get; set; }
-        public List<int> z1 { get; set; }
-        public int[] xCoords { get; set; }
-        public int[] yCoords { get; set; }
-        public int[] zCoords { get; set; }
-        public LineProperties LineProperties { get; set; }
-        public StraightConnectorLineConfiguration(int[] xcoords, int[] ycoords, int[] zcoords/*, string color, int width*/)
-        {
-            Type = GraphConstants.DEFAULTGRAPH;
-            //Mode = "lines";
-            xCoords = xcoords;
-            this.x = new List<int> { xcoords[0] };
-            this.x1 = new List<int> { xcoords[1] };
-            yCoords = ycoords;
-            this.y = new List<int> { ycoords[0] };
-            this.y1 = new List<int> { ycoords[1] };
-            zCoords = zcoords;
-            this.z = new List<int> { zcoords[0] };
-            this.z1 = new List<int> { zcoords[1] };
-            //LineProperties = new LineProperties { Color = color, Width = width };
-        }
+        public string type { get; set; } = GraphConstants.DEFAULTGRAPH;
     }
 }

@@ -15,9 +15,10 @@ namespace Portal.Controllers
         {
             _visualService = visualService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.Canvas = /*(List<EntityNodeConfiguration>)_visualService.GetNodePlottingGeometry(null) +*/ (List<StraightConnectorLineConfiguration>)_visualService.GetNodePlottingGeometry(null);
+            ViewBag.Canvas = (List<EntityNodeConfiguration>) await _visualService.GetNodePlottingGeometry(new Guid("822934B2-5EBE-4B47-843F-2423B20292F8"));
+            //ViewBag.Canvas = (StraightConnectionLineViewModel) await _visualService.GetLinePlottingGeometry(new Guid("822934B2-5EBE-4B47-843F-2423B20292F8"));
             return View();
         }
     }
