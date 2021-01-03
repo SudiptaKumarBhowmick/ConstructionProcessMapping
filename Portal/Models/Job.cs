@@ -16,6 +16,8 @@ namespace Portal.Models
         public List<OrderedStepNameAndStepNumber> OrderedStepNameAndStepNumber { get; set; }
         public List<CustomInputModel> OrderedCustomInputName { get; set; }
         public List<CustomOutputModel> OrderedCustomOutputName { get; set; }
+        public List<string> OrderedCustomInputName1 { get; set; } //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public List<string> OrderedCustomOutputName1 { get; set; } //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         public List<OrderedGenericInputNameAndStepNumber> OrderedGenericInputNameAndStepNumber { get; set; }
 
         //Not sure if the two below can be dealt within the file controller, they might have to be dealt with when the files are compiled into the database
@@ -56,20 +58,35 @@ namespace Portal.Models
             CustomOutputCount = orderedCustomOutputName.Count(); //is this right?
             GenericInputCount = orderedGenericInputNameAndStepNumber.Count(); //is this right?
         }
-        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType)
+        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType, List<string> orderedCustomInputName1, List<string> orderedCustomOutputName1)
         {
             JobName = jobName;
             JobExecutor = jobExecutor;
             OrganisationType = organisationType;
             ContractingOrganisationType = contractingOrganisationType;
+            OrderedCustomInputName1 = orderedCustomInputName1;
+            OrderedCustomOutputName1 = orderedCustomOutputName1;
         }
-        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType, int organisationLevelNumber)
+        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType, List<string> orderedCustomInputName1, List<string> orderedCustomOutputName1, int organisationLevelNumber)
         {
             JobName = jobName;
             JobExecutor = jobExecutor;
             OrganisationType = organisationType;
             ContractingOrganisationType = contractingOrganisationType;
+            OrderedCustomInputName1 = orderedCustomInputName1;
+            OrderedCustomOutputName1 = orderedCustomOutputName1;
             OrganisationLevelNumber = organisationLevelNumber;
+        }
+        public Job(string jobName, string jobExecutor, string organisationType, string contractingOrganisationType, List<string> orderedCustomInputName1, List<string> orderedCustomOutputName1, int organisationLevelNumber, int jobNumberonLevel)
+        {
+            JobName = jobName;
+            JobExecutor = jobExecutor;
+            OrganisationType = organisationType;
+            ContractingOrganisationType = contractingOrganisationType;
+            OrderedCustomInputName1 = orderedCustomInputName1;
+            OrderedCustomOutputName1 = orderedCustomOutputName1;
+            OrganisationLevelNumber = organisationLevelNumber;
+            JobNumberOnLevel = jobNumberonLevel;
         }
     }
 }

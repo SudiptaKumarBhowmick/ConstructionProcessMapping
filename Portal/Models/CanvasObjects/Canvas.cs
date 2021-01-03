@@ -24,7 +24,7 @@ namespace Portal.Models
         {
             InnerRadius = 9000;
             OuterRadius = 85720;
-            HeightOfHelix = 22000;
+            HeightOfHelix = 32000;
         }
     }
 }
