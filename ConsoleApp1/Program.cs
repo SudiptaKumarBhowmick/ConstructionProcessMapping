@@ -55,18 +55,45 @@ namespace ConsoleApp1
 
             List<IGrouping<int, Job>> jobsByLevelNumber = rawJobList.GroupBy(j => j.OrganisationLevelNumber).ToList();
 
+            int jobNumberOnLevel = 0;
+            List<Job> toBeDiscarded = new List<Job>();
+            List<Job> alreadyAdded = new List<Job>();
+            Dictionary<Job, int> allocateNumberOnLevel = new Dictionary<Job, int>();
+
             foreach (var item in jobsByLevelNumber)
             {
-                foreach (var subitem in item)
+                foreach (var subItem in item)
                 {
-                    if (subitem.OrderedCustomInputName1.Equals(subitem.OrderedCustomOutputName1.)
+                    if (!subItem.OrderedCustomInputName1.Any() && subItem.OrganisationType != "Owner")
                     {
-
+                        toBeDiscarded.Add(subItem); //job entry validation here
+                    }
+                    if (!subItem.OrderedCustomInputName1.Any(input => subItem.OrderedCustomOutputName1.Contains(input)))
+                    {
+                        allocateNumberOnLevel.Add(subItem, 1);
+                        alreadyAdded.Add(subItem);
                     }
                 }
-                Console.WriteLine(item.Key);
             }
-
+            while (alreadyAdded.Count < rawJobList.Count)
+            {
+                foreach (var item in jobsByLevelNumber)
+                {
+                    foreach (var subItem in item)
+                    {
+                        if (allocateNumberOnLevel.Keys.FirstOrDefault(x => x.OrderedCustomInputName1 == subItem.OrderedCustomOutputName1) is Job suitableJob
+                        && !allocateNumberOnLevel.ContainsKey(subItem))
+                        {
+                            allocateNumberOnLevel.Add(subItem, allocateNumberOnLevel.FirstOrDefault(x => x.Key.OrderedCustomInputName1.Equals(subItem.OrderedCustomOutputName1)).Value + 1);
+                            alreadyAdded.Add(subItem);
+                        }
+                    }
+                }
+            }
+            foreach (var item in allocateNumberOnLevel)
+            {
+                Console.WriteLine(allocateNumberOnLevel.Values);
+            }
             Console.ReadLine();
         }
     }

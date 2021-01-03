@@ -64,7 +64,7 @@ namespace Portal.Services
             int index = rawListIndexNumber;
             int organisationLevel = 0;
             List<Job> toBeDiscarded = new List<Job>();
-            List<Job> toBeRemoved = new List<Job>();
+            List<Job> alreadyAdded = new List<Job>();
             Dictionary<Job, int> allocateLevel = new Dictionary<Job, int>();
             foreach (var job in rawList)
             {
@@ -75,10 +75,10 @@ namespace Portal.Services
                 if (job.OrganisationType == "Owner")
                 {
                     allocateLevel.Add(job, organisationLevel += 1);
-                    toBeRemoved.Add(job);
+                    alreadyAdded.Add(job);
                 }
             }
-            while (toBeRemoved.Count < rawList.Count)
+            while (alreadyAdded.Count < rawList.Count)
             {
                 foreach (var job in rawList)
                 {
@@ -86,7 +86,7 @@ namespace Portal.Services
                         && !allocateLevel.ContainsKey(job))
                     {
                         allocateLevel.Add(job, allocateLevel.FirstOrDefault(x => x.Key.OrganisationType.Equals(job.ContractingOrganisationType)).Value + 1);
-                        toBeRemoved.Add(job);
+                        alreadyAdded.Add(job);
                     }
                 }
             }
