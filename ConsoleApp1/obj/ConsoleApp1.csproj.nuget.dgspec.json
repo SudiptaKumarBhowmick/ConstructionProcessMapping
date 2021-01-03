@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj": {}
+    "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj": {
+    "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj",
+        "projectUniqueName": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj",
         "projectName": "ConsoleApp1",
-        "projectPath": "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj",
+        "projectPath": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj",
         "packagesPath": "C:\\Users\\MFyfe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\ConsoleApp1\\obj\\",
+        "outputPath": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\ConsoleApp1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\MFyfe\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -27,8 +27,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\Portal\\Portal.csproj": {
-                "projectPath": "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\Portal\\Portal.csproj"
+              "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\Portal\\Portal.csproj": {
+                "projectPath": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\Portal\\Portal.csproj"
               }
             }
           }

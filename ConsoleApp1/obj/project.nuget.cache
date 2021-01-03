@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sksXJlF1wi0BbZ2itAgoo5KIpb/GQ8xubdpoTLCQT94auNWt83IJghdRGCzUdhMZf6REgdAhXjWCJHEI2ZsxjQ==",
+  "dgSpecHash": "YAjOrtRAuSyz3AWaIhWlZTtisyBmp/CqD6HSDu62MeeMczSTuBCyBLQX6o8Fc5sixwzm9BrqgSJXzRIMJTOrnQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\MFyfe\\source\\repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj",
+  "projectFilePath": "C:\\Users\\MFyfe\\Source\\Repos\\ConstructionProcessMapping\\ConsoleApp1\\ConsoleApp1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MFyfe\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.3\\microsoft.aspnetcore.cryptography.internal.3.1.3.nupkg.sha512",
     "C:\\Users\\MFyfe\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.3\\microsoft.aspnetcore.cryptography.keyderivation.3.1.3.nupkg.sha512",

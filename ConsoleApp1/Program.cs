@@ -1,4 +1,5 @@
-﻿using Portal.Models;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using Portal.Models;
 using Portal.Services;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace ConsoleApp1
             List<string> in2 = new List<string>(); in2.Add("c"); in2.Add("e");
             List<string> out2 = new List<string>(); out2.Add("g");
 
-            List<string> in3 = new List<string>(); in3.Add("c"); in3.Add("d");
+            List<string> in3 = new List<string>(); in3.Add("c"); in3.Add("d"); in3.Add("g");
             List<string> out3 = new List<string>(); out3.Add("e"); out3.Add("f");
 
             List<string> in4 = new List<string>(); in4.Add("e"); in4.Add("f");
@@ -55,7 +56,6 @@ namespace ConsoleApp1
 
             List<IGrouping<int, Job>> jobsByLevelNumber = rawJobList.GroupBy(j => j.OrganisationLevelNumber).ToList();
 
-            int jobNumberOnLevel = 0;
             List<Job> toBeDiscarded = new List<Job>();
             List<Job> alreadyAdded = new List<Job>();
             Dictionary<Job, int> allocateNumberOnLevel = new Dictionary<Job, int>();
@@ -68,7 +68,7 @@ namespace ConsoleApp1
                     {
                         toBeDiscarded.Add(subItem); //job entry validation here
                     }
-                    if (!subItem.OrderedCustomInputName1.Any(input => subItem.OrderedCustomOutputName1.Contains(input)))
+                    if (!item.Any(i => i.OrderedCustomOutputName1 == subItem.OrderedCustomInputName1))
                     {
                         allocateNumberOnLevel.Add(subItem, 1);
                         alreadyAdded.Add(subItem);
