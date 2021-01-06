@@ -47,12 +47,10 @@ namespace Portal.Services
             rawJobList.Add(new Job("Painting", "Painter", "PlasteringAndPainting", "GeneralContractor", in8, out8));
 
             List<Job> levelAssignedJobList = new List<Job>();
-            foreach (var job in rawJobList)
-            {
-                List<Job> levelAssignedJob = rawJobList.Select(x => new Job(x.JobName, x.JobExecutor, x.OrganisationType, x.ContractingOrganisationType, x.OrderedCustomInputName1, x.OrderedCustomOutputName1, OrgLevelInt(rawJobList, rawJobList.IndexOf(x)))).ToList();
-            }
+                levelAssignedJobList = rawJobList.Select(x => new Job(x.JobName, x.JobExecutor, x.OrganisationType, x.ContractingOrganisationType, x.OrderedCustomInputName1, x.OrderedCustomOutputName1, OrgLevelInt(rawJobList, rawJobList.IndexOf(x)))).ToList();
+            
             List<Job> jobLocatedOnLevelList = new List<Job>();
-            foreach (var job in levelAssignedJobList)
+            foreach (Job job in levelAssignedJobList)
             {
                 List<Job> levelAssignedJob = rawJobList.Select(x => new Job(x.JobName, x.JobExecutor, x.OrganisationType, x.ContractingOrganisationType, x.OrderedCustomInputName1, x.OrderedCustomOutputName1, OrgLevelInt(rawJobList, rawJobList.IndexOf(x)), JobPlacementOnLevel(levelAssignedJobList, levelAssignedJobList.IndexOf(x)))).ToList();
             }
@@ -64,9 +62,9 @@ namespace Portal.Services
             int index = rawListIndexNumber;
             int organisationLevel = 0;
             List<Job> toBeDiscarded = new List<Job>();
-            List<Job> alreadyAdded = new List<Job>();
+            List<Job> alreadyAdded = new List<Job>();  // can probably lose this somehow
             Dictionary<Job, int> allocateLevel = new Dictionary<Job, int>();
-            foreach (var job in rawList)
+            foreach (Job job in rawList)
             {
                 if (job.ContractingOrganisationType == string.Empty && job.OrganisationType != "Owner")
                 {
@@ -80,7 +78,7 @@ namespace Portal.Services
             }
             while (alreadyAdded.Count < rawList.Count)
             {
-                foreach (var job in rawList)
+                foreach (Job job in rawList)
                 {
                     if (allocateLevel.Keys.FirstOrDefault(x => x.OrganisationType == job.ContractingOrganisationType) is Job suitableJob
                         && !allocateLevel.ContainsKey(job))
@@ -90,7 +88,12 @@ namespace Portal.Services
                     }
                 }
             }
-            return allocateLevel.Values.IndexOf(index); //correct values returning here
+            List<int> values = new List<int>();
+            foreach (var value in allocateLevel)
+            {
+                values.Add(value.Value);
+            }
+            return values[index];
         }
 
         public int JobPlacementOnLevel(List<Job> levelAssigned, int levelAssignedListIndexNumber)

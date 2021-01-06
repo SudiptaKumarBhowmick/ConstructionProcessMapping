@@ -20,14 +20,12 @@ namespace Portal.Controllers
         private readonly IJobDataService _jobDataService;
         private readonly IFileService _fileService;
         private readonly IContractualRelationshipTreeService _contractualRelationshipTreeService;
-        //private readonly IProductRelationshipNetworkService _productRelationshipNetworkService;
-        public FileController(ApplicationDbContext context, IJobDataService jobDataService, IFileService fileService, IContractualRelationshipTreeService contractualRelationshipTreeService/*, IProductRelationshipNetworkService productRelationshipNetworkService*/)
+        public FileController(ApplicationDbContext context, IJobDataService jobDataService, IFileService fileService, IContractualRelationshipTreeService contractualRelationshipTreeService)
         {
             _context = context;
             _jobDataService = jobDataService;
             _fileService = fileService;
             _contractualRelationshipTreeService = contractualRelationshipTreeService;
-            //_productRelationshipNetworkService = productRelationshipNetworkService;
         }
         public IActionResult Index()
         {

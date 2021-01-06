@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Portal.Models
 {
-    public class OrganisationTypeEntity
+    public class OrganisationTypeEntity //seems like this can go - along with contractual relationship service
     {
         public string Name { get; set; }
         public int Level { get; set; }

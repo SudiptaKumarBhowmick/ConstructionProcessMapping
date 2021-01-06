@@ -93,7 +93,7 @@ namespace Portal.Services
         //{
         //    return productStructuringInformationModelList.Select(x => new Job(x.StepNumber, x.CustomOutput, x.MasterName, x.JobName)).ToList();
         //}    //something is not right with this, this should be using the constructor format
-        private string NameFinder(string findTrue) => findTrue != "" ? findTrue : "";
+        private string NameFinder(string findTrue) => findTrue != "" ? findTrue : ""; //not certain this is correct
         //{
         //    string jobNameFinder = "";
         //    if (findTrue != "")

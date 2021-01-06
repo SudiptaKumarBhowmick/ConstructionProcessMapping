@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Portal.Models
 {
-    public class ProductTypeEntity
+    public class ProductTypeEntity //seems like this can go
     {
         public string Name { get; set; }
         public int Level { get; set; }

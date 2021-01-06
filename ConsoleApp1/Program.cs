@@ -20,29 +20,29 @@ namespace ConsoleApp1
             //}
             //Console.WriteLine();
 
-            List<string> in1 = new List<string>(); in1.Add("a"); in1.Add("b");
-            List<string> out1 = new List<string>(); out1.Add("c"); out1.Add("d");
+            List<string> in1 = new List<string>(); in1.Add("a"); in1.Add("b");   //1
+            List<string> out1 = new List<string>(); out1.Add("c"); out1.Add("d");//1
 
-            List<string> in2 = new List<string>(); in2.Add("c"); in2.Add("e");
-            List<string> out2 = new List<string>(); out2.Add("g");
+            List<string> in2 = new List<string>(); in2.Add("c"); in2.Add("e");   //2
+            List<string> out2 = new List<string>(); out2.Add("g");               //2
 
-            List<string> in3 = new List<string>(); in3.Add("c"); in3.Add("d"); in3.Add("g");
-            List<string> out3 = new List<string>(); out3.Add("e"); out3.Add("f");
+            List<string> in3 = new List<string>(); in3.Add("c"); in3.Add("d");   //2
+            List<string> out3 = new List<string>(); out3.Add("e"); out3.Add("f");//2
 
-            List<string> in4 = new List<string>(); in4.Add("e"); in4.Add("f");
-            List<string> out4 = new List<string>(); out4.Add("l"); out4.Add("t");
+            List<string> in4 = new List<string>(); in4.Add("e"); in4.Add("f");   //3
+            List<string> out4 = new List<string>(); out4.Add("l"); out4.Add("t");//3
 
-            List<string> in5 = new List<string>(); in5.Add("e"); in5.Add("t");
-            List<string> out5 = new List<string>(); out5.Add("m"); out5.Add("u");
+            List<string> in5 = new List<string>(); in5.Add("e"); in5.Add("t");  //3
+            List<string> out5 = new List<string>(); out5.Add("m"); out5.Add("u");  //3
 
-            List<string> in6 = new List<string>(); in6.Add("e"); in6.Add("u");
-            List<string> out6 = new List<string>(); out6.Add("n"); out6.Add("v");
+            List<string> in6 = new List<string>(); in6.Add("e"); in6.Add("u");  //3
+            List<string> out6 = new List<string>(); out6.Add("n"); out6.Add("v");  //3
 
-            List<string> in7 = new List<string>(); in7.Add("e"); in7.Add("v");
-            List<string> out7 = new List<string>(); out7.Add("o"); out7.Add("w");
+            List<string> in7 = new List<string>(); in7.Add("e"); in7.Add("v");  //3
+            List<string> out7 = new List<string>(); out7.Add("o"); out7.Add("w");  //3
 
-            List<string> in8 = new List<string>(); in8.Add("e"); in8.Add("w");
-            List<string> out8 = new List<string>(); out8.Add("p"); out8.Add("x");
+            List<string> in8 = new List<string>(); in8.Add("e"); in8.Add("w");  //3
+            List<string> out8 = new List<string>(); out8.Add("p"); out8.Add("x");  //3
 
             List<Job> rawJobList = new List<Job>();
             rawJobList.Add(new Job("ProjectBriefCreation", "ProjectOwner", "Owner", null, in1, out1, 1));
@@ -60,15 +60,15 @@ namespace ConsoleApp1
             List<Job> alreadyAdded = new List<Job>();
             Dictionary<Job, int> allocateNumberOnLevel = new Dictionary<Job, int>();
 
-            foreach (var item in jobsByLevelNumber)
+            foreach (IGrouping<int, Job> item in jobsByLevelNumber)
             {
-                foreach (var subItem in item)
+                foreach (Job subItem in item)
                 {
                     if (!subItem.OrderedCustomInputName1.Any() && subItem.OrganisationType != "Owner")
                     {
                         toBeDiscarded.Add(subItem); //job entry validation here
                     }
-                    if (!item.Any(i => i.OrderedCustomOutputName1 == subItem.OrderedCustomInputName1))
+                    if (!item.Any(x => x.OrderedCustomOutputName1.Intersect(subItem.OrderedCustomInputName1).Any()))
                     {
                         allocateNumberOnLevel.Add(subItem, 1);
                         alreadyAdded.Add(subItem);
@@ -77,20 +77,25 @@ namespace ConsoleApp1
             }
             while (alreadyAdded.Count < rawJobList.Count)
             {
-                foreach (var item in jobsByLevelNumber)
+                foreach (IGrouping<int, Job> item in jobsByLevelNumber)
                 {
-                    foreach (var subItem in item)
+                    foreach (Job subItem in item)
                     {
-                        if (allocateNumberOnLevel.Keys.FirstOrDefault(x => x.OrderedCustomInputName1 == subItem.OrderedCustomOutputName1) is Job suitableJob
+                        if (allocateNumberOnLevel./*Where(x => x.Value == subItem.OrganisationLevelNumber).*/Any(x => x.Key.OrderedCustomOutputName1.Intersect(subItem.OrderedCustomInputName1).Any())
                         && !allocateNumberOnLevel.ContainsKey(subItem))
                         {
-                            allocateNumberOnLevel.Add(subItem, allocateNumberOnLevel.FirstOrDefault(x => x.Key.OrderedCustomInputName1.Equals(subItem.OrderedCustomOutputName1)).Value + 1);
+                            allocateNumberOnLevel.Add(subItem, allocateNumberOnLevel.Keys.Any(x =>
+                            {
+                                IEnumerable<string> enumerable = x.OrderedCustomOutputName1.Intersect(subItem.OrderedCustomInputName1);
+                                return enumerable;
+                            }).Any());
+                            allocateNumberOnLevel.Add(subItem, allocateNumberOnLevel.FirstOrDefault(x => x.Key.OrderedCustomOutputName1 == (subItem.OrderedCustomInputName1)).Value + 1);
                             alreadyAdded.Add(subItem);
                         }
                     }
                 }
             }
-            foreach (var item in allocateNumberOnLevel)
+            foreach (KeyValuePair<Job, int> item in allocateNumberOnLevel)
             {
                 Console.WriteLine(allocateNumberOnLevel.Values);
             }
